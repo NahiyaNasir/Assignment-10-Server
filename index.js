@@ -32,11 +32,17 @@ async function run() {
     // Send a ping to confirm a successful connection
        const artsCraftsCollection=client.db('craftsDB').collection('crafts')
        
+        app.get('/crafts',async(req,res)=>{
+            const cursor=artsCraftsCollection.find()
+            const result=await cursor.toArray()
+            res.send(result)
+        })
     app.post('/crafts',async(req,res)=>{
         const newItem=req.body
         console.log(newItem);
         const result=await artsCraftsCollection.insertOne(newItem)
         res.send(result)
+        console.log(result);
 
     })
 
