@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.gze7wpc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -37,6 +37,15 @@ async function run() {
             const result=await cursor.toArray()
             res.send(result)
         })
+         app.get('/myList/:email',async(req,res)=>{
+          const email=req.params.email
+          console.log(email);
+          const quarry={email:email}
+                   const result=await artsCraftsCollection.find(quarry).toArray()
+          console.log(result);
+          res.send(result)
+
+         })
     app.post('/crafts',async(req,res)=>{
         const newItem=req.body
         console.log(newItem);
