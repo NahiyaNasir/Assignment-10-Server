@@ -37,23 +37,72 @@ async function run() {
             const result=await cursor.toArray()
             res.send(result)
         })
-         app.get('/myList/:email',async(req,res)=>{
+        app.post('/crafts',async(req,res)=>{
+          const newItem=req.body
+          // console.log(newItem);
+          const result=await artsCraftsCollection.insertOne(newItem)
+          // res.send(result)
+          console.log(result);
+  
+      })
+        app.get('/crafts/:id',async(req,res)=>{
+          const id = req.params.id;
+          // console.log(id);
+          const quarry = { _id: new ObjectId(id) };
+          const result = await artsCraftsCollection.findOne(quarry);
+          res.send(result);
+      })
+        
+        app.get('/allItem',async(req,res)=>{
+            const cursor=artsCraftsCollection.find()
+            const result=await cursor.toArray()
+            res.send(result)
+        })
+        app.get('/myList/:email',async(req,res)=>{
           const email=req.params.email
-          console.log(email);
+          // console.log(email);
           const quarry={email:email}
                    const result=await artsCraftsCollection.find(quarry).toArray()
-          console.log(result);
+          // console.log(result);
           res.send(result)
 
          })
-    app.post('/crafts',async(req,res)=>{
-        const newItem=req.body
-        console.log(newItem);
-        const result=await artsCraftsCollection.insertOne(newItem)
-        res.send(result)
+        app.get("/update/:id", async (req, res) => {
+          const id = req.params.id;
+          // console.log(id);
+          const quarry = { _id: new ObjectId(id) };
+          const result = await artsCraftsCollection.findOne(quarry);
+          res.send(result);
+        });
+        
+      
+      app.put('/update/:id', async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
+        const filter = { _id: new ObjectId(id) };
+        const options = { upsert: true };
+        const updateItem = req.body;
+        console.log(updateItem);
+        const item = {
+            $set: {
+                img: updateItem.img,
+                ratting: updateItem.ratting,
+                custom: updateItem.custom,
+                status: updateItem.status,
+                time: updateItem.time,
+                price: updateItem.price,
+                desc: updateItem.desc,
+                item_name: updateItem.item_name,
+                sub_name: updateItem.sub_name,
+            },
+        };
+        console.log(item);
+        const result = await artsCraftsCollection.updateOne(filter, item, options);
         console.log(result);
-
-    })
+        res.send(result);
+    });
+    
+  
 
 
     // await client.db("admin").command({ ping: 1 });
