@@ -49,7 +49,7 @@ async function run() {
       const quarry = { _id: new ObjectId(id) };
       const result = await artsCraftsCollection.findOne(quarry);
       res.send(result);
-    });
+    })
     //  get all data
     app.get("/allItem", async (req, res) => {
       const cursor = artsCraftsCollection.find();
